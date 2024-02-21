@@ -34,16 +34,17 @@
 
 {%  block content %}
 
-    {%  for cafe in cafes_data %}
+    {%  for zähler in range(10) %}
         <div class="container mt-5">
             <div class="row">
                 <div class="col-md-6 mx-auto">
                     <div class="card-container">
                         <div class="card" >
                             <div class="card-body">
-                                <h3 style="font-family: Great Vibes" class="card-title">{{ cafe.get('name') }}</h3>
-                                <p class="card-text">{{ cafe.get('vicinity') }}</p>
-                                <p> Rating: {{ cafe.get('rating') }}</p>
+                                <h3 style="font-family: Great Vibes; color: #8a6626" class="card-title">{{ cafes_data[zähler].get('name') }}</h3>
+                                <p class="card-text">{{ cafes_data[zähler].get('vicinity') }}</p>
+                                <p> Rating: {{ cafes_data[zähler].get('rating') }}</p>
+                                <img src="">
                             </div>
                             <div class="card-back">
                                 <div class="card-body">
