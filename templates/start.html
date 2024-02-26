@@ -1,32 +1,76 @@
 {% extends "base.html" %}
 
 {%  block head %}
+        <!--<link rel="stylesheet" href="styles/styles.css">-->
+
 <style>
-        .card-container {
-            perspective: 1000px;
-        }
 
-        .card {
-            transform-style: preserve-3d;
-            transition: transform 0.5s;
-            width: 300px;
-            height: 500px;
-        }
 
-        .card:hover {
-            transform: rotateY(180deg);
-        }
 
-        .card .card-body {
-            backface-visibility: hidden;
-        }
-
-        .card .card-back {
-            transform: rotateY(180deg);
-        }
 
         @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap')
 
+    .round-image-container {
+        width: 150px; /* Die Breite des runden Containers */
+        height: 150px; /* Die Höhe des runden Containers */
+        border-radius: 50%; /* Macht den Container rund */
+        overflow: hidden; /* Verhindert, dass das Bild über die runden Ecken hinausragt */
+    }
+
+    .round-image-container img {
+        width: 100%; /* Füllt das Bild den runden Container aus */
+        height: auto; /* Behält das Seitenverhältnis des Bildes bei */
+        display: block; /* Entfernt Lücken unterhalb des Bildes */
+    }
+
+
+        .flip-card {
+      background-color: white;
+      width: 300px;
+      height: 500px;
+      border: 1px solid #f1f1f1;
+      perspective: 1000px; / /* Remove this if you don't want the 3D effect */
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    /* This container is needed to position the front and back side */
+    .flip-card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      text-align: center;
+      transition: transform 0.8s;
+      transform-style: preserve-3d;
+    }
+
+    /* Do an horizontal flip when you move the mouse over the flip box container */
+    .flip-card:hover .flip-card-inner {
+      transform: rotateY(180deg);
+    }
+
+    /* Position the front and back side */
+    .flip-card-front, .flip-card-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      -webkit-backface-visibility: hidden; /* Safari */
+      backface-visibility: hidden;
+    }
+
+    /* Style the front side (fallback if image is missing) */
+    .flip-card-front {
+      background-color: #bbb;
+      color: black;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Style the back side */
+    .flip-card-back {
+      background-color: dodgerblue;
+      color: white;
+      transform: rotateY(180deg);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
 </style>
 
 {%  endblock %}
@@ -34,58 +78,86 @@
 
 {%  block content %}
 
-    <div class="container mt-5">
-        <div class="row">
-            {%  for zähler in range(5) %}
+<div class="container col-xxl-8 px-4 py-5">
+    <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
+      <div class="col-10 col-sm-8 col-lg-6">
+        <img src="static/Bilder/coffee.jpg" class="d-block mx-lg-auto img-fluid" alt="Bootstrap Themes" width="700" height="500" loading="lazy">
+      </div>
+      <div style="color: #8a6626;" class="col-lg-6">
+        <h1  style="color: #8a6626; font-family: Great Vibes;" >Finde die Remotework-Cafeteria in deiner Umgebung</h1>
+        <p style="color: #8a6626;" class="lead">Mit dieser Website sind sie in der Lage die besten Cafeterias mit Remotework-möglichkeiten und kostenlosem WiFi zu finden. Geben sie im obigen Suchfeld einfach den Namen ihrer Stadt ein, und finden Sie ihren neuen neuen Lieblingscafe zum arbeiten.</p>
 
-                <div class="col-md-4 mb-4">
-                    <div class="card-container">
-                        <div class="card" style="background-color: #ebe2d3; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); backface-visibility: hidden;"  >
-                            <div class="card-body" style="backface-visibility: hidden;">
-                                <h3 style="font-family: Great Vibes; color: #8a6626" class="card-title">{{ cafes_data[zähler].get('name') }}</h3>
-                                <p class="card-text">{{ cafes_data[zähler].get('vicinity') }}</p>
-                                <!--<p> Rating: {{ cafes_data[zähler].get('rating') }}</p> -->
-                                {%  for stern in range(cafes_data[zähler].get('rating') | int) %}
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16">
-                                        <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
-                                    </svg>
-                                {% endfor %}
+      </div>
+    </div>
+</div>
 
-                                <!-- Image -->
-                                <div style="position: relative; width: 100%; height: 300px; overflow: hidden; border: 1px solid #ccc;">
-                                    <img src="{{ cafe_fotos[zähler] }}" style="width: 100%; height: 100%; object-fit: cover;">
-                                </div>
+<!--Hero -->
 
+<div class="container mt-5">
+    <h2 style="font-size: 50px;font-family: Great Vibes; color: #8a6626;"> Suchort: {{ such_ort }} </h2>
+</div>
+
+
+        <!-- Neue Flipping-Card -->
+        <!-- Neue Flipping-Card -->
+<div class="container mt-5" style="margin-left: 80px;">
+    <div class="row">
+        {% for zähler in range(9) %}
+            <div class="col-md-4 mb-4" style="margin-bottom: 40px; margin-top: 40px; background-color: #ebe2d3;">
+                <div class="flip-card" style="background-color: #ebe2d3;">
+                    <div class="flip-card-inner" style="background-color: #ebe2d3;">
+                        <!-- Vorderseite -->
+                        <div class="flip-card-front" style="backface-visibility: hidden; background-color: #ebe2d3;" >
+                            <h3 style="font-family: Great Vibes; color: #8a6626; margin-right: 20px; margin-left: 20px; margin-top: 30px; margin-bottom: 30px;">{{ cafes_data[zähler].get('name') }}</h3>
+                            {% for stern in range(cafes_data[zähler].get('rating') | int) %}
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16">
+                                    <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
+                                </svg>
+                            {% endfor %}
+
+                            <div style="margin-top: 15px; position: relative; width: 100%; border: 1px solid #ccc; backface-visibility: hidden;">
+                                <img src="{{ cafe_fotos[zähler] }}" style="width: 295px; height: 295px; object-fit: cover; border-radius: 10px; overflow: hidden; margin-top: 20px;">
+                            </div>
+                        </div>
+
+                        <!-- Rückseite -->
+                        <div class="flip-card-back" style="backface-visibility: hidden;background-color: #ebe2d3; text-align: center; padding: 20px;">
+
+                            <div class="round-image-container" style=" margin-bottom: 30px; margin-top:40px; width: 50%; display: inline-block; align-content: center; justify-content: center;">
+                                <img style="width: 150px; height: 150px; border-radius: 50%; overflow: hidden; margin-bottom: 20px;" src="{{ cafe_fotos[zähler] }}" alt="Beschreibung des Bildes">
                             </div>
 
-                            <!--Rückseite -->
-                            <div class="card-back" style="backface-visibility: hidden;">
-                                <div class="card-body">
-                                    <h5 class="card-title">Rückseite</h5>
 
-                                    <p class="card-text">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-globe" viewBox="0 0 16 16">
-                                            <path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m7.5-6.923c-.67.204-1.335.82-1.887 1.855A8 8 0 0 0 5.145 4H7.5zM4.09 4a9.3 9.3 0 0 1 .64-1.539 7 7 0 0 1 .597-.933A7.03 7.03 0 0 0 2.255 4zm-.582 3.5c.03-.877.138-1.718.312-2.5H1.674a7 7 0 0 0-.656 2.5zM4.847 5a12.5 12.5 0 0 0-.338 2.5H7.5V5zM8.5 5v2.5h2.99a12.5 12.5 0 0 0-.337-2.5zM4.51 8.5a12.5 12.5 0 0 0 .337 2.5H7.5V8.5zm3.99 0V11h2.653c.187-.765.306-1.608.338-2.5zM5.145 12q.208.58.468 1.068c.552 1.035 1.218 1.65 1.887 1.855V12zm.182 2.472a7 7 0 0 1-.597-.933A9.3 9.3 0 0 1 4.09 12H2.255a7 7 0 0 0 3.072 2.472M3.82 11a13.7 13.7 0 0 1-.312-2.5h-2.49c.062.89.291 1.733.656 2.5zm6.853 3.472A7 7 0 0 0 13.745 12H11.91a9.3 9.3 0 0 1-.64 1.539 7 7 0 0 1-.597.933M8.5 12v2.923c.67-.204 1.335-.82 1.887-1.855q.26-.487.468-1.068zm3.68-1h2.146c.365-.767.594-1.61.656-2.5h-2.49a13.7 13.7 0 0 1-.312 2.5m2.802-3.5a7 7 0 0 0-.656-2.5H12.18c.174.782.282 1.623.312 2.5zM11.27 2.461c.247.464.462.98.64 1.539h1.835a7 7 0 0 0-3.072-2.472c.218.284.418.598.597.933M10.855 4a8 8 0 0 0-.468-1.068C9.835 1.897 9.17 1.282 8.5 1.077V4z"/>
-                                        </svg>
-                                        {{ web_adressen[zähler] }}</p>
+                            <p class="card-text" style="color: #8a6626;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-globe" viewBox="0 0 16 16">
+                                    <path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m7.5-6.923c-.67.204-1.335.82-1.887 1.855A8 8 0 0 0 5.145 4H7.5zM4.09 4a9.3 9.3 0 0 1 .64-1.539 7 7 0 0 1 .597-.933A7.03 7.03 0 0 0 2.255 4zm-.582 3.5c.03-.877.138-1.718.312-2.5H1.674a7 7 0 0 0-.656 2.5zM4.847 5a12.5 12.5 0 0 0-.338 2.5H7.5V5zM8.5 5v2.5h2.99a12.5 12.5 0 0 0-.337-2.5zM4.51 8.5a12.5 12.5 0 0 0 .337 2.5H7.5V8.5zm3.99 0V11h2.653c.187-.765.306-1.608.338-2.5zM5.145 12q.208.58.468 1.068c.552 1.035 1.218 1.65 1.887 1.855V12zm.182 2.472a7 7 0 0 1-.597-.933A9.3 9.3 0 0 1 4.09 12H2.255a7 7 0 0 0 3.072 2.472M3.82 11a13.7 13.7 0 0 1-.312-2.5h-2.49c.062.89.291 1.733.656 2.5zm6.853 3.472A7 7 0 0 0 13.745 12H11.91a9.3 9.3 0 0 1-.64 1.539 7 7 0 0 1-.597.933M8.5 12v2.923c.67-.204 1.335-.82 1.887-1.855q.26-.487.468-1.068zm3.68-1h2.146c.365-.767.594-1.61.656-2.5h-2.49a13.7 13.7 0 0 1-.312 2.5m2.802-3.5a7 7 0 0 0-.656-2.5H12.18c.174.782.282 1.623.312 2.5zM11.27 2.461c.247.464.462.98.64 1.539h1.835a7 7 0 0 0-3.072-2.472c.218.284.418.598.597.933M10.855 4a8 8 0 0 0-.468-1.068C9.835 1.897 9.17 1.282 8.5 1.077V4z"/>
+                                </svg>
+                                {{ web_adressen[zähler] }}
+                            </p>
 
-                                    <p class="card-text">{{ cafes_data[zähler].get('formatted_phone_number') }}</p>
 
-                                    <p> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-geo-alt-fill" viewBox="0 0 16 16">
-                                        <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10m0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6"/>
-                                    </svg>  {{ cafes_data[zähler].get('formatted_address') }}
-                                    </p>
+                            <p class="card-text" style="color: #8a6626;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-telephone-fill" viewBox="0 0 16 16">
+                                  <path fill-rule="evenodd" d="M1.885.511a1.745 1.745 0 0 1 2.61.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.68.68 0 0 0 .178.643l2.457 2.457a.68.68 0 0 0 .644.178l2.189-.547a1.75 1.75 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.6 18.6 0 0 1-7.01-4.42 18.6 18.6 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877z"/>
+                                </svg>
 
-                                </div>
-                            </div>
+                                {{ cafes_data[zähler].get('formatted_phone_number') }}</p>
+
+                            <p style="color: #8a6626;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-geo-alt-fill" viewBox="0 0 16 16">
+                                    <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10m0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6"/>
+                                </svg>
+                                {{ cafes_data[zähler].get('formatted_address') }}
+                            </p>
+
                         </div>
                     </div>
                 </div>
-
-            {% endfor %}
-
-        </div>
+            </div>
+        {% endfor %}
     </div>
+</div>
+
 
 
 {%  endblock %}
