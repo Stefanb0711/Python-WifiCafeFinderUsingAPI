@@ -5,9 +5,9 @@ from dotenv import find_dotenv, load_dotenv
 
 api_key = os.getenv('API_KEY')
 
-dotenv_path = find_dotenv()
+#dotenv_path = find_dotenv()
 
-load_dotenv(dotenv_path)
+load_dotenv()
 
 cafe_fotos = []
 web_adressen = []
